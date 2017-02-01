@@ -21,8 +21,17 @@ public class FileListing extends AppCompatActivity {
             "text3"
     };
     Integer[] icon_img={
-            R.drawable.1
-            R.drawable.
+            R.drawable.ic_action_achievement,
+            R.drawable.ic_action_alarm,
+            R.drawable.ic_star,
+    };
+
+    String[] path={
+            "long/path/number1",
+            "whatever/thins/is/padding",
+            "/aaaaa7aaa7/aaaa"
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,10 @@ public class FileListing extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        FileListingAdapter adapter = new FileListingAdapter(this, dir_name, icon_img, path);
+        list=(ListView)findViewById(R.id.files_list);
+        list.setAdapter(adapter);
     }
 
     public static Intent newIntent(Context packageContext) {
