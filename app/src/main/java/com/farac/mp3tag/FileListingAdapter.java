@@ -41,6 +41,7 @@ public class FileListingAdapter extends ArrayAdapter<String> {
         directory.setText(dir_name[position]);
         icon.setImageResource(icon_img[position]);
         full_path.setText(path[position]);
+
         return rowView;
     }
 
