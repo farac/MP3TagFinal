@@ -8,8 +8,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ListView;
+
+import static com.farac.mp3tag.R.id.icon;
 
 public class FileListing extends AppCompatActivity {
+
+    ListView list;
+    String[] dir_name={
+            "text1",
+            "text2",
+            "text3"
+    };
+    Integer[] icon_img={
+            R.drawable.1
+            R.drawable.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
