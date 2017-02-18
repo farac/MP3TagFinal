@@ -1,7 +1,11 @@
 package com.farac.mp3tag;
 
+import android.net.Uri;
+import android.webkit.MimeTypeMap;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -43,6 +47,7 @@ public class FileOperationsModel {
     }
     public List<File> getAllFiles(File f){
         File[] allFiles =f.listFiles();
+
         List<File> dirs = new ArrayList<>();
         List<File> files = new ArrayList<>();
 
@@ -53,7 +58,24 @@ public class FileOperationsModel {
                 files.add(file);
                 }
             }
+        Collections.sort(dirs);
+        Collections.sort(files);
+
+        dirs.addAll(files);
+
+        return dirs;
         }
+
+    public String getMimeType(Uri uri){
+        String mimeType = null;
+
+        String extension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
+
+        if (MimeTypeMap.getSingleton().hasExtension(extension)){
+            mimeType=MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return mimeType;
+    }
 
     }
 
