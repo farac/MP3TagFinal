@@ -1,6 +1,6 @@
 package com.farac.mp3tag;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,43 +8,59 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.util.List;
+
 /**
  * Created by bruno on 01/02/2017.
  */
 
 //http://www.androidinterview.com/android-custom-listview-with-image-and-text-using-arrayadapter/
 
-public class FileListingAdapter extends ArrayAdapter<String> {
+public class FileListingAdapter extends ArrayAdapter<File> {
 
-    private final Activity context;
-    private final String[] dir_name;
-    private final Integer[] icon_img;
-    private final String[] path;
+    private Context mContext;
+    private int mResource;
+    private List<File> mObjects;
 
-    public FileListingAdapter (Activity context, String[] dir_name, Integer[] icon_img, String[] path){
-        super(context,R.layout.file_list,dir_name);
-
-        this.context=context;
-        this.dir_name=dir_name;
-        this.icon_img=icon_img;
-        this.path=path;
+    public FileListingAdapter(Context c, int res, List<File> o){
+        super(c, res, o);
+        mContext= c;
+        mResource=res;
+    }
+    @Override
+    public File getItem(int i){
+        return mObjects.get(i);
     }
 
-    public View getView(int position, View view, ViewGroup parent){
-        LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.file_list, null, true);
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent){
+        View v = convertView;
 
-        TextView directory =(TextView) rowView.findViewById(R.id.dir_name);
-        ImageView icon = (ImageView) rowView.findViewById(R.id.list_icon);
-        TextView full_path = (TextView) rowView.findViewById(R.id.full_path);
+        if (v==null){
+            LayoutInflater inflater = (LayoutInflater.from(mContext));
+            v= inflater.inflate(mResource, null);
+        }
+        ImageView iv = (ImageView) v.findViewById(R.id.list_icon);
+        TextView nameView = (TextView) v.findViewById(R.id.dir_name);
+        TextView detailsView = (TextView) v.findViewById(R.id.full_path);
+        File file=getItem(position);
 
-        directory.setText(dir_name[position]);
-        icon.setImageResource(icon_img[position]);
-        full_path.setText(path[position]);
+        if (file.isDirectory()){
+            iv.setImageResource(R.drawable.ic_folder);
+        } else {
+            iv.setImageResource(R.drawable.ic_insert_drive_file);
+            if(file.length()>0){
+                detailsView.setText(String.valueOf(file.length()));
+            }
+        }
 
-        return rowView;
+        nameView.setText(file.getName());
+        return v;
+
     }
+}
 
 
-    }
+
 
