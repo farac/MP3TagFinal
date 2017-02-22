@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 public class FileListing extends AppCompatActivity {
 
+
     private static final String TAG="FileListingTag";
 
     ListView list;
@@ -52,6 +53,10 @@ public class FileListing extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
+
 
         if (ActivityCompat.checkSelfPermission(FileListing.this,
                 permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){

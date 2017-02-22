@@ -1,83 +1,51 @@
 package com.farac.mp3tag;
 
-import android.net.Uri;
-import android.webkit.MimeTypeMap;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by Farac on 16.2.2017..
  */
 
 public class FileOperationsModel {
-    private File mCurrentDir;
-    private File mPreviousDir;
-    private Stack<File> mHistoryStack;
+    private String Path="";
+    private int Icon_type=0; //1=dir, 2=other file, 3=mp3
+    private String Name="";
 
-    public FileOperationsModel(){
-        generate();
-    }
-    private void generate() {
-        mHistoryStack = new Stack<>();
+    public String getPath() {
+        return Path;
     }
 
-    public File getmCurrentDir() {
-        return mCurrentDir;
+    public void setPath(File path) {
+        Path = path.getAbsolutePath().toString();
     }
 
-    public void setmCurrentDir(File mCurrentDir) {
-        this.mCurrentDir = mCurrentDir;
+    public int getIcon_type() {
+        return Icon_type;
     }
 
-    public boolean hasmPreviousDir(){
-        return !mHistoryStack.isEmpty();
-    }
-
-    public File getmPreviousDir(){
-        return mHistoryStack.pop();
-    }
-
-    public void setmPreviousDir(File mPreviousDir){
-        this.mPreviousDir=mPreviousDir;
-        mHistoryStack.add(mPreviousDir);
-    }
-    public List<File> getAllFiles(File f){
-        File[] allFiles =f.listFiles();
-
-        List<File> dirs = new ArrayList<>();
-        List<File> files = new ArrayList<>();
-
-        for (File file : allFiles){
-            if (file.isDirectory()) {
-                dirs.add(file);
-            }else{
-                files.add(file);
-                }
+    public void setIcon_type(File icon_type) {
+        if (icon_type.isDirectory()) {
+            Icon_type = 1;
+        } else {
+            String[] split = icon_type.getName().toString().split(".");
+            if (split[1] =="mp3"){
+                Icon_type=3;
             }
-        Collections.sort(dirs);
-        Collections.sort(files);
-
-        dirs.addAll(files);
-
-        return dirs;
+            else{
+                Icon_type=2;
+            }
         }
-
-    public String getMimeType(Uri uri){
-        String mimeType = null;
-
-        String extension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
-
-        if (MimeTypeMap.getSingleton().hasExtension(extension)){
-            mimeType=MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        }
-        return mimeType;
     }
 
+    public String getName() {
+        return Name;
     }
+
+    public void setName(File name) {
+        Name = name.getName().toString();
+    }
+}
 
 
 
