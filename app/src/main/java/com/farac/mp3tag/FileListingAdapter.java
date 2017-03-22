@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Created by bruno on 01/02/2017.
  */
@@ -17,11 +19,11 @@ import android.widget.TextView;
 public class FileListingAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
-    private final String[] dir_name;
-    private final Integer[] icon_img;
-    private final String[] path;
+    private final List<String> dir_name;
+    private final List<Integer> icon_img;
+    private final List<String> path;
 
-    public FileListingAdapter (Activity context, String[] dir_name, Integer[] icon_img, String[] path){
+    public FileListingAdapter (Activity context, List<String> dir_name,List<Integer> icon_img, List<String> path){
         super(context,R.layout.file_list,dir_name);
 
         this.context=context;
@@ -38,9 +40,9 @@ public class FileListingAdapter extends ArrayAdapter<String> {
         ImageView icon = (ImageView) rowView.findViewById(R.id.list_icon);
         TextView full_path = (TextView) rowView.findViewById(R.id.full_path);
 
-        directory.setText(dir_name[position]);
-        icon.setImageResource(icon_img[position]);
-        full_path.setText(path[position]);
+        directory.setText(dir_name.get(position));
+        icon.setImageResource(icon_img.get(position));
+        full_path.setText(path.get(position));
 
         return rowView;
     }

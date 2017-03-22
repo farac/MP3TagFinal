@@ -17,7 +17,7 @@ public class FileOperationsModel {
     }
 
     public void setPath(File path) {
-        Path = path.getAbsolutePath().toString();
+        Path = path.getAbsolutePath();
     }
 
     public int getIcon_type() {
@@ -28,7 +28,7 @@ public class FileOperationsModel {
         if (icon_type.isDirectory()) {
             Icon_type = 1;
         } else {
-            String[] split = icon_type.getName().toString().split(".");
+            String[] split = icon_type.getName().split(".");
             if (split[1] =="mp3"){
                 Icon_type=3;
             }
@@ -43,7 +43,7 @@ public class FileOperationsModel {
     }
 
     public void setName(File name) {
-        Name = name.getName().toString();
+        Name = name.getName();
     }
 }
 

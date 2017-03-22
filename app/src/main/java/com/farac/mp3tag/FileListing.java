@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -12,31 +13,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class FileListing extends AppCompatActivity {
 
-
     private static final String TAG="FileListingTag";
 
+
+    private File root= Environment.getExternalStorageDirectory();
+    private File current_folder;
+
+
+
     ListView list;
-    String[] dir_name={
-            "text1",
-            "text2",
-            "text3"
-    };
-    Integer[] icon_img={
-            R.drawable.ic_action_achievement,
-            R.drawable.ic_action_alarm,
-            R.drawable.ic_star,
-    };
+    List<String> dir_name;
 
-    String[] path={
-            "long/path/number1",
-            "whatever/thins/is/padding",
-            "/aaaaa7aaa7/aaaa"
-    };
+    List<Integer> icon_img;
 
+    List<String> path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,16 @@ public class FileListing extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "snackbar mi moze popusit kurac aka izbrisi me", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+
             }
+
+
         });
 
 
@@ -71,6 +75,35 @@ public class FileListing extends AppCompatActivity {
                     (FileListing.this,new String[]{permission.WRITE_EXTERNAL_STORAGE},2);
             Log.v(TAG," upa u write if");
         }
+
+        current_folder=root;
+        File[] files_list=current_folder.listFiles();
+        String[] file_name = new String[files_list.length];
+        Integer[] icon_im= new Integer[files_list.length];
+        String[] fpath = new String[files_list.length];
+
+        Arrays.sort(files_list);
+
+        for(int i=0;i<file_name.length;i++){
+            file_name[i]= files_list[i].getName();
+            fpath[i]=files_list[i].getAbsolutePath();
+
+            String ext =files_list[i].getName().substring(files_list[i].getName().lastIndexOf(".")+1,files_list[i].getName().length());
+            File tf=new File(files_list[i].getAbsolutePath());
+            Log.e(TAG," ekstenzija je " +ext);
+            if(tf.isDirectory()){
+                icon_im[i]=R.drawable.ic_folder;
+            }
+            else if(Objects.equals(ext, "mp3")) {
+                icon_im[i] = R.drawable.ic_music_note;
+            }
+            else icon_im[i]=R.drawable.ic_insert_drive_file;
+        }
+
+        dir_name= Arrays.asList(file_name);
+        icon_img=Arrays.asList(icon_im);
+        path=Arrays.asList(fpath);
+
         Log.v(TAG," ispa iz oba/prisa ifove");
         FileListingAdapter adapter = new FileListingAdapter(this, dir_name, icon_img, path);
         list=(ListView)findViewById(R.id.files_list);
