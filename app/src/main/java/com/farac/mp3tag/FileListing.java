@@ -14,21 +14,23 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class FileListing extends AppCompatActivity {
 
-    private static final String TAG="FileListingTag";
+    private static final String TAG = "FileListingTag";
 
 
-    private File root= Environment.getExternalStorageDirectory();
+    private File selected;
+    private File root = Environment.getExternalStorageDirectory();
     private File current_folder;
-
 
 
     ListView list;
@@ -59,60 +61,53 @@ public class FileListing extends AppCompatActivity {
         });
 
 
-
-
-
         if (ActivityCompat.checkSelfPermission(FileListing.this,
-                permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions
-                    (FileListing.this,new String[]{permission.READ_EXTERNAL_STORAGE},1);
-            Log.v(TAG," upa u read if");
+                    (FileListing.this, new String[]{permission.READ_EXTERNAL_STORAGE}, 1);
+            Log.v(TAG, " upa u read if");
         }
 
         if (ActivityCompat.checkSelfPermission(FileListing.this,
-                permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions
-                    (FileListing.this,new String[]{permission.WRITE_EXTERNAL_STORAGE},2);
-            Log.v(TAG," upa u write if");
+                    (FileListing.this, new String[]{permission.WRITE_EXTERNAL_STORAGE}, 2);
+            Log.v(TAG, " upa u write if");
         }
+        //if (!current_folder.exists()) {
+            current_folder = root;
+       // }
 
-        current_folder=root;
-        File[] files_list=current_folder.listFiles();
-        String[] file_name = new String[files_list.length];
-        Integer[] icon_im= new Integer[files_list.length];
-        String[] fpath = new String[files_list.length];
+        final FileOperationsModel FOM;
+        FOM = new FileOperationsModel();
+        FOM.sendData(current_folder);
+        dir_name = Arrays.asList(FOM.getFileName());
+        icon_img = Arrays.asList(FOM.getIm_res());
+        path = Arrays.asList(FOM.getPathData());
 
-        Arrays.sort(files_list);
 
-        for(int i=0;i<file_name.length;i++){
-            file_name[i]= files_list[i].getName();
-            fpath[i]=files_list[i].getAbsolutePath();
+        Log.v(TAG, " ispa iz oba/prisa ifove");
 
-            String ext =files_list[i].getName().substring(files_list[i].getName().lastIndexOf(".")+1,files_list[i].getName().length());
-            File tf=new File(files_list[i].getAbsolutePath());
-            Log.e(TAG," ekstenzija je " +ext);
-            if(tf.isDirectory()){
-                icon_im[i]=R.drawable.ic_folder;
-            }
-            else if(Objects.equals(ext, "mp3")) {
-                icon_im[i] = R.drawable.ic_music_note;
-            }
-            else icon_im[i]=R.drawable.ic_insert_drive_file;
-        }
-
-        dir_name= Arrays.asList(file_name);
-        icon_img=Arrays.asList(icon_im);
-        path=Arrays.asList(fpath);
-
-        Log.v(TAG," ispa iz oba/prisa ifove");
-        FileListingAdapter adapter = new FileListingAdapter(this, dir_name, icon_img, path);
-        list=(ListView)findViewById(R.id.files_list);
+        final FileListingAdapter adapter = new FileListingAdapter(this, dir_name, icon_img, path);
+        list = (ListView) findViewById(R.id.input);
         list.setAdapter(adapter);
-    }
+
+        list.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(FileListing.this, "Klika si broj:" + i, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+}
 
     public static Intent newIntent(Context packageContext) {
         Intent i= new Intent(packageContext, FileListing.class);
         return i;
     }
+
+
 
 }

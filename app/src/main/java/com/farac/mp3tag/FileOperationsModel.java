@@ -1,49 +1,60 @@
 package com.farac.mp3tag;
 
 
+import android.util.Log;
+
 import java.io.File;
+import java.util.Arrays;
+import java.util.Objects;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Farac on 16.2.2017..
  */
 
 public class FileOperationsModel {
-    private String Path="";
-    private int Icon_type=0; //1=dir, 2=other file, 3=mp3
-    private String Name="";
 
-    public String getPath() {
-        return Path;
-    }
+    String[] file_name;
+    String[] fpath;
+    Integer[] im_res;
+    File[] input;
 
-    public void setPath(File path) {
-        Path = path.getAbsolutePath();
-    }
+    public void sendData(File f){
 
-    public int getIcon_type() {
-        return Icon_type;
-    }
 
-    public void setIcon_type(File icon_type) {
-        if (icon_type.isDirectory()) {
-            Icon_type = 1;
-        } else {
-            String[] split = icon_type.getName().split(".");
-            if (split[1] =="mp3"){
-                Icon_type=3;
+        input=f.listFiles();
+        file_name = new String[input.length];
+        im_res= new Integer[input.length];
+        fpath = new String[input.length];
+
+        Arrays.sort(input);
+
+        for(int i=0;i<file_name.length;i++){
+            file_name[i]= input[i].getName();
+            fpath[i]= input[i].getAbsolutePath();
+
+            String ext = input[i].getName().substring(input[i].getName().lastIndexOf(".")+1, input[i].getName().length());
+            File tf=new File(input[i].getAbsolutePath());
+            Log.e(TAG," ekstenzija je " +ext);
+            if(tf.isDirectory()){
+                im_res[i]=R.drawable.ic_folder;
             }
-            else{
-                Icon_type=2;
+            else if(Objects.equals(ext, "mp3")) {
+                im_res[i] = R.drawable.ic_music_note;
             }
+            else im_res[i]=R.drawable.ic_insert_drive_file;
         }
     }
 
-    public String getName() {
-        return Name;
+    public String[] getPathData(){
+        return fpath;
     }
-
-    public void setName(File name) {
-        Name = name.getName();
+    public String[] getFileName(){
+        return file_name;
+    }
+    public Integer[] getIm_res(){
+        return im_res;
     }
 }
 
