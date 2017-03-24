@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MP3Tag.iml" filepath="$PROJECT_DIR$/MP3Tag.iml" />
       <module fileurl="file://$PROJECT_DIR$/MP3TagFinal.iml" filepath="$PROJECT_DIR$/MP3TagFinal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

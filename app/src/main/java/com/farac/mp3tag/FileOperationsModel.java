@@ -47,6 +47,19 @@ public class FileOperationsModel {
         }
     }
 
+    public boolean isMP3(File f){
+        String ext = f.getName();
+        if(Objects.equals(ext.substring(ext.lastIndexOf(".") + 1), "mp3")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+
+
+    }
+
     public String[] getPathData(){
         return fpath;
     }

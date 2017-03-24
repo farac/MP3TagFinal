@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,9 +50,6 @@ public class FileListing extends AppCompatActivity {
         fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "snackbar mi moze popusit kurac aka izbrisi me", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
 
             }
 
@@ -97,16 +93,40 @@ public class FileListing extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(FileListing.this, "Klika si broj:" + i, Toast.LENGTH_SHORT).show();
 
+                String[] cpath =FOM.getPathData();
+                File temp= new File (cpath[i]);
+                if(temp.isDirectory()) {
+                    current_folder = temp;
+                    Toast.makeText(FileListing.this, "" + current_folder, Toast.LENGTH_LONG).show();
+                    FOM.sendData(current_folder);
+                    dir_name = Arrays.asList(FOM.getFileName());
+                    icon_img = Arrays.asList(FOM.getIm_res());
+                    path = Arrays.asList(FOM.getPathData());
+                    final FileListingAdapter adapter = new FileListingAdapter(FileListing.this, dir_name, icon_img, path);
+                    list = (ListView) findViewById(R.id.input);
+                    list.setAdapter(adapter);
+                }
+                else if(FOM.isMP3(temp)){
+                    Toast.makeText(FileListing.this, "klika si mp3", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(FileListing.this, "Only MP3 files are supported!", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
 
 }
 
+
     public static Intent newIntent(Context packageContext) {
         Intent i= new Intent(packageContext, FileListing.class);
         return i;
     }
+
+
 
 
 
