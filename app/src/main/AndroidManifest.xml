@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.farac.mp3tag">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
@@ -22,6 +22,8 @@
             android:name=".FileListing"
             android:label="@string/title_activity_file_listing"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".TagEditor">
         </activity>
     </application>
 

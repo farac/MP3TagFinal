@@ -1,5 +1,6 @@
 package com.farac.mp3tag;
 
+
 import android.Manifest.permission;
 import android.content.Context;
 import android.content.Intent;
@@ -23,10 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileListing extends AppCompatActivity {
-
     private static final String TAG = "FileListingTag";
-
-
     private File selected;
     private File root = Environment.getExternalStorageDirectory();
     private File current_folder;
@@ -45,6 +43,7 @@ public class FileListing extends AppCompatActivity {
         setContentView(R.layout.activity_file_listing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Select an MP3 file");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new OnClickListener() {
@@ -108,6 +107,9 @@ public class FileListing extends AppCompatActivity {
                 }
                 else if(FOM.isMP3(temp)){
                     Toast.makeText(FileListing.this, "klika si mp3", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(FileListing.this, TagEditor.class);
+                    intent.putExtra("file_clicked", temp.getAbsolutePath());
+                    FileListing.this.startActivity(intent);
                 }
                 else {
                     Toast.makeText(FileListing.this, "Only MP3 files are supported!", Toast.LENGTH_SHORT).show();
@@ -125,6 +127,8 @@ public class FileListing extends AppCompatActivity {
         Intent i= new Intent(packageContext, FileListing.class);
         return i;
     }
+
+
 
 
 
