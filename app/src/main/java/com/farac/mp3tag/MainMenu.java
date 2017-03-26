@@ -15,7 +15,7 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-
+        setTitle("Bruno Farac - Maturalni rad");
         mButtonEditTags= (Button) findViewById(R.id.button_edit_files);
         mButtonEditTags.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MP3Tag</string>
-    <string name="button_edit_files">Edit tags in files...</string>
-    <string name="button_get_albumart">Open album art lookup...</string>
+    <string name="button_edit_files">Browse for MP3 files…</string>
     <string name="title_activity_file_listing">FileListing</string>
 </resources>

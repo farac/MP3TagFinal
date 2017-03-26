@@ -22,20 +22,19 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class FileListing extends AppCompatActivity {
     private static final String TAG = "FileListingTag";
     private File selected;
     private File root = Environment.getExternalStorageDirectory();
     private File current_folder;
-
-
     ListView list;
     List<String> dir_name;
-
     List<Integer> icon_img;
-
     List<String> path;
+    Stack<String> history = new Stack<>();
+    FileOperationsModel FOM = new FileOperationsModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +48,24 @@ public class FileListing extends AppCompatActivity {
         fab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (history.isEmpty()){
+                    Toast.makeText(FileListing.this, "You're at the root folder!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    current_folder = new File(history.peek());
+                    Log.e(TAG, "idem na" + history.peek());
+                    FOM.sendData(new File(history.pop()));
+                    dir_name = Arrays.asList(FOM.getFileName());
+                    icon_img = Arrays.asList(FOM.getIm_res());
+                    path = Arrays.asList(FOM.getPathData());
+                    final FileListingAdapter adapter = new FileListingAdapter(FileListing.this, dir_name, icon_img, path);
+                    list = (ListView) findViewById(R.id.input);
+                    list.setAdapter(adapter);
+                }
             }
 
 
         });
-
 
         if (ActivityCompat.checkSelfPermission(FileListing.this,
                 permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -69,21 +80,18 @@ public class FileListing extends AppCompatActivity {
                     (FileListing.this, new String[]{permission.WRITE_EXTERNAL_STORAGE}, 2);
             Log.v(TAG, " upa u write if");
         }
+        Log.v(TAG, " ispa iz oba/prisa ifove");
         //if (!current_folder.exists()) {
             current_folder = root;
+        history.push(current_folder.toString());
+
        // }
 
-        final FileOperationsModel FOM;
-        FOM = new FileOperationsModel();
         FOM.sendData(current_folder);
         dir_name = Arrays.asList(FOM.getFileName());
         icon_img = Arrays.asList(FOM.getIm_res());
         path = Arrays.asList(FOM.getPathData());
-
-
-        Log.v(TAG, " ispa iz oba/prisa ifove");
-
-        final FileListingAdapter adapter = new FileListingAdapter(this, dir_name, icon_img, path);
+        FileListingAdapter adapter = new FileListingAdapter(this, dir_name, icon_img, path);
         list = (ListView) findViewById(R.id.input);
         list.setAdapter(adapter);
 
@@ -95,13 +103,14 @@ public class FileListing extends AppCompatActivity {
                 String[] cpath =FOM.getPathData();
                 File temp= new File (cpath[i]);
                 if(temp.isDirectory()) {
+                    history.push(current_folder.toString());
                     current_folder = temp;
                     Toast.makeText(FileListing.this, "" + current_folder, Toast.LENGTH_LONG).show();
                     FOM.sendData(current_folder);
                     dir_name = Arrays.asList(FOM.getFileName());
                     icon_img = Arrays.asList(FOM.getIm_res());
                     path = Arrays.asList(FOM.getPathData());
-                    final FileListingAdapter adapter = new FileListingAdapter(FileListing.this, dir_name, icon_img, path);
+                    FileListingAdapter adapter = new FileListingAdapter(FileListing.this, dir_name, icon_img, path);
                     list = (ListView) findViewById(R.id.input);
                     list.setAdapter(adapter);
                 }

@@ -20,9 +20,4 @@
         android:text="@string/button_edit_files"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_get_albumart"
-        android:text="@string/button_get_albumart"/>
 </LinearLayout>
