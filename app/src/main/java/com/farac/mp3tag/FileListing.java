@@ -26,7 +26,6 @@ import java.util.Stack;
 
 public class FileListing extends AppCompatActivity {
     private static final String TAG = "FileListingTag";
-    private File selected;
     private File root = Environment.getExternalStorageDirectory();
     private File current_folder;
     ListView list;
